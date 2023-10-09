@@ -1,0 +1,15 @@
+{
+"html.format.templating": true,
+"[javascriptreact]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+},
+"[css]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+},
+"[json]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+},
+"[javascript]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+}
+}
