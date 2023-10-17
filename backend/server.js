@@ -1,24 +1,39 @@
 import express from "express";
 import path from "path";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+dotenv.config();
 import employeeRouter from "./employeeRouter.js";
-console.log("testing!! Hiii");
+import loginRouter from "./routes/loginRoute.js";
 
-const port = 4000;
+console.log("testing!! Hiiii");
+
+const port = process.env.PORT || 4000;
 
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-const _dirname = path.resolve();
-console.log({ _dirname });
+const __dirname = path.resolve();
+console.log({ __dirname });
 
 app.use("/api", employeeRouter);
 
-app.use("/test", express.static(path.join(_dirname, "/public")));
+app.use("/test", express.static(path.join(__dirname, "/public")));
+app.use("/login", loginRouter);
 
 app.get("/", (req, res) => {
-  res.send("<h2>Hello World</h2>..<i>italic</i>");
+  res.sendFile(path.join(__dirname, "/public/login.html"));
 });
+
+app.get("/welcome", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/welcome.html"));
+});
+// app.get("/", (req, res) => {
+//   res.send("<h2>Hello World</h2>..<i>italics</i>");
+// });
 
 app.use((err, req, res, next) => {
   // Log the error
