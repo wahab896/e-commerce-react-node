@@ -22,10 +22,13 @@ console.log({ __dirname });
 app.use("/api", employeeRouter);
 
 app.use("/test", express.static(path.join(__dirname, "/public")));
-app.use("/login", loginRouter);
+app.use("/user", loginRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/login.html"));
+});
+app.get("/create", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/create.html"));
 });
 
 app.get("/welcome", (req, res) => {
