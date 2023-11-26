@@ -1,5 +1,6 @@
 {
 "html.format.templating": true,
+"editor.wordWrap": "on",
 "[javascriptreact]": {
     "editor.defaultFormatter": "svipas.prettier-plus"
 },
