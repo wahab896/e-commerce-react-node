@@ -1,6 +1,7 @@
 {
 "html.format.templating": true,
 "editor.wordWrap": "on",
+"workbench.colorCustomizations": {"statusBar.background": "#2b604d"},
 "[javascriptreact]": {
     "editor.defaultFormatter": "svipas.prettier-plus"
 },
