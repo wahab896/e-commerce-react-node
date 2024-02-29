@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaWindowMinimize,
+} from "react-icons/fa";
 
 const items = [
   {
     id: 1,
     image: "https://picsum.photos/200/300",
     title: "Item 1",
+    price: "10",
     cls: "translate-x-0",
     description: "This is the first item in the carousel.",
   },
@@ -13,6 +18,7 @@ const items = [
     id: 2,
     image: "https://picsum.photos/200/301",
     title: "Item 2",
+    price: "30",
     cls: "translate-x-full",
     description: "This is the second item in the carousel.",
   },
@@ -20,6 +26,7 @@ const items = [
     id: 3,
     image: "https://picsum.photos/200/302",
     title: "Item 3",
+    price: "120",
     cls: "translate-x-full",
     description: "This is the third item in the carousel.",
   },
@@ -28,6 +35,7 @@ const items = [
     id: 3,
     image: "https://picsum.photos/200/303",
     title: "Item 3",
+    price: "10",
     cls: "translate-x-full",
     description: "This is the third item in the carousel.",
   },
@@ -36,12 +44,13 @@ const items = [
     id: 3,
     image: "https://picsum.photos/200/304",
     title: "Item 3",
+    price: "1289",
     cls: "translate-x-full",
     description: "This is the third item in the carousel.",
   },
 ];
 
-const Carousal = () => {
+const Carousal = ({}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   // const [transitionCls, setTransitionCls] = useState("");
   const [data, setData] = useState([...items]);
@@ -90,14 +99,14 @@ const Carousal = () => {
           onClick={handlePrevClick}
           className="absolute bottom-1/2 left-2 z-10"
         >
-          <FaChevronLeft className="text-gray-700 w-5 h-10" />
+          <FaChevronLeft className="text-gray-200 w-5 h-10" />
         </button>
         <button
           hidden={activeIndex == data.length - 1}
           onClick={handleNextClick}
           className="absolute bottom-1/2 right-2 z-10"
         >
-          <FaChevronRight className="text-gray-700 w-5 h-10" />
+          <FaChevronRight className="text-gray-200 w-5 h-10" />
         </button>
         <div className={`relative overflow-hidden h-[300px] w-full`}>
           {/* <div className="h-[300px] w-full transition-all linear duration-1000 -translate-x-full">
@@ -108,21 +117,50 @@ const Carousal = () => {
               <div
                 key={s.id}
                 className={
-                  "absolute h-[300px] w-full transition-all linear duration-1000 " +
-                  s.cls +
-                  " bg-red-900"
+                  "absolute h-[300px] w-full transition-all linear duration-1000 flex " +
+                  s.cls
                 }
               >
-                <img className="w-full h-[100%]" src={s.image} />
+                <img className="w-full h-full" src={s.image} />
+                <div className="bg-gray-600 w-1/2 h-full text-white font-semibold flex flex-col text-center justify-center">
+                  <span className="text-2xl">{data[activeIndex].title}</span>
+                  <span className="text-xl">(${data[activeIndex].price})</span>
+                </div>
               </div>
             );
           })}
-        </div>
-        <div>
-          <h1>Show the hovering buttons of carousal</h1>
+
+          <CarousalInfoNavigator
+            data={data}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+          />
         </div>
       </div>
     </div>
   );
 };
 export default Carousal;
+
+const CarousalInfoNavigator = ({ data, activeIndex, setActiveIndex }) => {
+  return (
+    <div className="absolute bottom-0 w-full h-30 bg-gray-700/30 flex justify-center items-center">
+      {data.map((s, i) => {
+        return (
+          <FaWindowMinimize
+            onClick={() => {
+              setActiveIndex(i);
+            }}
+            key={s.id}
+            className={
+              (activeIndex == i
+                ? "text-white"
+                : "text-white/40 hover:text-white/60") +
+              " w-6 h-5 px-1 mb-3 hover:cursor-pointer"
+            }
+          />
+        );
+      })}
+    </div>
+  );
+};
