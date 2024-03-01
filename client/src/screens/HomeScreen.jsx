@@ -2,7 +2,7 @@ import Carousal from "../components/Carousal";
 
 const HomeScreen = () => {
   return (
-    <div>
+    <div className="container mx-auto px-20">
       HomeScreen.......
       <Carousal />
     </div>

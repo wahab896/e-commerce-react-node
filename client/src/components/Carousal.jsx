@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -32,7 +32,7 @@ const items = [
   },
 
   {
-    id: 3,
+    id: 33,
     image: "https://picsum.photos/200/303",
     title: "Item 3",
     price: "10",
@@ -41,7 +41,7 @@ const items = [
   },
 
   {
-    id: 3,
+    id: 32,
     image: "https://picsum.photos/200/304",
     title: "Item 3",
     price: "1289",
@@ -54,6 +54,7 @@ const Carousal = ({}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   // const [transitionCls, setTransitionCls] = useState("");
   const [data, setData] = useState([...items]);
+  const touchRef = useRef(null);
 
   const handleNextClick = () => {
     // setTransitionCls("translate-x-full");
@@ -67,6 +68,29 @@ const Carousal = ({}) => {
     setActiveIndex((prevIndex) =>
       prevIndex - 1 < 0 ? items?.length - 1 : prevIndex - 1
     );
+  };
+
+  const handleTouchStart = (e) => {
+    if (!e.touches?.[0]?.clientX) {
+      touchRef.current = null;
+    } else {
+      touchRef.current = e.touches[0].clientX;
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (touchRef.current) {
+      const touchStart = touchRef.current;
+      const touchEnd = e.touches[0].clientX;
+      const delta = touchEnd - touchStart;
+
+      if (delta > 0) {
+        handleNextClick();
+      } else {
+        handlePrevClick();
+      }
+      touchRef.current = null;
+    }
   };
 
   useEffect(() => {
@@ -92,44 +116,47 @@ const Carousal = ({}) => {
   }, [activeIndex]);
 
   return (
-    <div className="w-[60%] m-auto pt-11">
-      <div className="relative">
-        <button
-          hidden={activeIndex == 0}
-          onClick={handlePrevClick}
-          className="absolute bottom-1/2 left-2 z-10"
-        >
-          <FaChevronLeft className="text-gray-200 w-5 h-10" />
-        </button>
-        <button
-          hidden={activeIndex == data.length - 1}
-          onClick={handleNextClick}
-          className="absolute bottom-1/2 right-2 z-10"
-        >
-          <FaChevronRight className="text-gray-200 w-5 h-10" />
-        </button>
-        <div className={`relative overflow-hidden h-[300px] w-full`}>
-          {/* <div className="h-[300px] w-full transition-all linear duration-1000 -translate-x-full">
-            <img className="w-full h-[100%]" src={data[0].image} />
-          </div> */}
-          {data.map((s, i) => {
-            return (
-              <div
-                key={s.id}
-                className={
-                  "absolute h-[300px] w-full transition-all linear duration-1000 flex " +
-                  s.cls
-                }
-              >
-                <img className="w-full h-full" src={s.image} />
-                <div className="bg-gray-600 w-1/2 h-full text-white font-semibold flex flex-col text-center justify-center">
-                  <span className="text-2xl">{data[activeIndex].title}</span>
-                  <span className="text-xl">(${data[activeIndex].price})</span>
-                </div>
+    <div className="relative w-full h-[410px] m-auto pt-11">
+      <button
+        hidden={activeIndex == 0}
+        onClick={handlePrevClick}
+        className="absolute top-1/2 left-2 z-10"
+      >
+        <FaChevronLeft className="text-gray-200 w-5 h-10" />
+      </button>
+      <button
+        hidden={activeIndex == data.length - 1}
+        onClick={handleNextClick}
+        className="absolute top-1/2 right-2 z-10"
+      >
+        <FaChevronRight className="text-gray-200 w-5 h-10" />
+      </button>
+      <div
+        className={`relative overflow-hidden h-[inherit] w-full`}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+      >
+        {data.map((s, i) => {
+          return (
+            <div
+              key={s.id}
+              className={
+                "absolute h-[inherit] w-full transition-all linear duration-1000 flex " +
+                s.cls
+              }
+            >
+              <img className="w-full h-full" src={s.image} />
+              <div className="bg-gray-600 w-1/2 h-full text-white font-semibold hidden flex-col text-center justify-center md:flex">
+                <span className="text-2xl">{data[activeIndex].title}</span>
+                <span className="text-xl">(${data[activeIndex].price})</span>
               </div>
-            );
-          })}
-
+            </div>
+          );
+        })}
+        <div className="absolute bottom-0 w-full h-30 bg-gray-700/30 flex-col justify-center items-center text-white text-center ">
+          <span className="text-xl md:hidden">
+            {data[activeIndex].title} (${data[activeIndex].price})
+          </span>
           <CarousalInfoNavigator
             data={data}
             activeIndex={activeIndex}
@@ -144,7 +171,7 @@ export default Carousal;
 
 const CarousalInfoNavigator = ({ data, activeIndex, setActiveIndex }) => {
   return (
-    <div className="absolute bottom-0 w-full h-30 bg-gray-700/30 flex justify-center items-center">
+    <div className=" w-full flex justify-center items-center">
       {data.map((s, i) => {
         return (
           <FaWindowMinimize
