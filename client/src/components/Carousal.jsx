@@ -5,52 +5,7 @@ import {
   FaWindowMinimize,
 } from "react-icons/fa";
 
-const items = [
-  {
-    id: 1,
-    image: "https://picsum.photos/200/300",
-    title: "Item 1",
-    price: "10",
-    cls: "translate-x-0",
-    description: "This is the first item in the carousel.",
-  },
-  {
-    id: 2,
-    image: "https://picsum.photos/200/301",
-    title: "Item 2",
-    price: "30",
-    cls: "translate-x-full",
-    description: "This is the second item in the carousel.",
-  },
-  {
-    id: 3,
-    image: "https://picsum.photos/200/302",
-    title: "Item 3",
-    price: "120",
-    cls: "translate-x-full",
-    description: "This is the third item in the carousel.",
-  },
-
-  {
-    id: 33,
-    image: "https://picsum.photos/200/303",
-    title: "Item 3",
-    price: "10",
-    cls: "translate-x-full",
-    description: "This is the third item in the carousel.",
-  },
-
-  {
-    id: 32,
-    image: "https://picsum.photos/200/304",
-    title: "Item 3",
-    price: "1289",
-    cls: "translate-x-full",
-    description: "This is the third item in the carousel.",
-  },
-];
-
-const Carousal = ({}) => {
+const Carousal = ({ items = [] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   // const [transitionCls, setTransitionCls] = useState("");
   const [data, setData] = useState([...items]);
@@ -116,7 +71,7 @@ const Carousal = ({}) => {
   }, [activeIndex]);
 
   return (
-    <div className="relative w-full h-[410px] m-auto pt-11">
+    <div className="relative w-full h-[410px] m-auto mt-11 hover:cursor-pointer">
       <button
         hidden={activeIndex == 0}
         onClick={handlePrevClick}
@@ -153,7 +108,7 @@ const Carousal = ({}) => {
             </div>
           );
         })}
-        <div className="absolute bottom-0 w-full h-30 bg-gray-700/30 flex-col justify-center items-center text-white text-center ">
+        <div className="absolute bottom-0 w-full h-30 bg-gray-700/60 flex-col justify-center items-center text-white text-center ">
           <span className="text-xl md:hidden">
             {data[activeIndex].title} (${data[activeIndex].price})
           </span>
