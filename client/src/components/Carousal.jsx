@@ -75,16 +75,16 @@ const Carousal = ({ items = [] }) => {
       <button
         hidden={activeIndex == 0}
         onClick={handlePrevClick}
-        className="absolute top-1/2 left-2 z-10"
+        className="absolute left-2 z-10 w-14 h-full"
       >
-        <FaChevronLeft className="text-gray-200 w-5 h-10" />
+        <FaChevronLeft className="text-gray-200 w-5 mx-auto h-10" />
       </button>
       <button
         hidden={activeIndex == data.length - 1}
         onClick={handleNextClick}
-        className="absolute top-1/2 right-2 z-10"
+        className="absolute right-2 z-10 w-14 h-full"
       >
-        <FaChevronRight className="text-gray-200 w-5 h-10" />
+        <FaChevronRight className="text-gray-200 w-5 mx-auto h-10" />
       </button>
       <div
         className={`relative overflow-hidden h-[inherit] w-full`}

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FaShoppingCart, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
 
 const NavTabs = () => {
@@ -9,17 +9,14 @@ const NavTabs = () => {
   };
   return (
     <div className="flex justify-between gap-12 items-center content-center text-gray-300">
-      <NavLink className="flex hover:underline" to="/profile">
-        <FaShoppingCart className="inline m-1" />
-        Cart
-      </NavLink>
       <button
-        className="relative"
+        className="relative hover:underline mx-2"
         onClick={() => {
           onToggle(!expanded);
         }}
       >
-        <FaUserCircle className="rounded inline m-1 text-xl" />
+        <FaUser className="inline m-1 text-gray-300 hover:text-gray-200 hover:cursor-pointer" />
+        Sign In
         {expanded && (
           <div className="absolute bg-gray-900 shadow-lg rounded-md right-0 px-3">
             <ul
@@ -27,7 +24,7 @@ const NavTabs = () => {
               className="flex flex-col gap-y-2 justify-evenly py-2"
             >
               <NavLink className="flex hover:underline" to="/profile">
-                <FaUserCircle className="inline m-1" />
+                <FaUser className="inline m-1" />
                 Profile
               </NavLink>
               <NavLink className="flex hover:underline" to="/logout">
