@@ -9,15 +9,18 @@ const NavTabs = () => {
   };
   return (
     <div className="flex justify-between gap-12 items-center content-center text-gray-300">
-      <button
-        className="relative hover:underline mx-2"
-        onClick={() => {
-          onToggle(!expanded);
-        }}
+      <NavLink
+        className={({ isActive }) =>
+          `relative mx-2 ${isActive ? "underline" : "hover:underline "} `
+        }
+        to="/login"
+        // onClick={() => {
+        //   onToggle(!expanded);
+        // }}
       >
         <FaUser className="inline m-1 text-gray-300 hover:text-gray-200 hover:cursor-pointer" />
         Sign In
-        {expanded && (
+        {/* {expanded && (
           <div className="absolute bg-gray-900 shadow-lg rounded-md right-0 px-3">
             <ul
               onClick={() => onToggle(false)}
@@ -33,8 +36,8 @@ const NavTabs = () => {
               </NavLink>
             </ul>
           </div>
-        )}
-      </button>
+        )} */}
+      </NavLink>
     </div>
   );
 };
