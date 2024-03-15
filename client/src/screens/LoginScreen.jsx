@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../slices/usersApiSlice";
+import Loader from "../components/Loader";
+import { toast } from "react-toastify";
+import { setCredentials } from "../slices/authSlice";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const navigate = useNavigate();
+  
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
@@ -13,8 +24,15 @@ const LoginScreen = () => {
     // navigate if we get user info
   }, [redirect]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    try {
+      const res = await login({ email, password });
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
 
   return (
@@ -55,6 +73,7 @@ const LoginScreen = () => {
         >
           Sign In
         </button>
+        {isLoading && <Loader />}
         <div className="mt-4 text-gray-500">
           New Customer?
           <NavLink
