@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header>
       <nav className="w-full bg-gray-700">
-        <div className="container px-5 md:px-20 py-3 flex flex-wrap justify-between mx-auto items-center relative overflow-hidden">
+        <div className="container px-5 md:px-20 py-3 flex flex-wrap justify-between mx-auto items-center relative">
           <NavLink to="/">
             <span className="text-gray-300">Logo</span>
           </NavLink>
@@ -27,11 +27,16 @@ const Header = () => {
               (openNav
                 ? "max-md:flex max-md:flex-col max-md:basis-full max-md:grow"
                 : "hidden") +
-              ` md:ml-auto md:flex md:flex-row md:h-auto md:overflow-auto overflow-hidden items-center transition-all ease-in-out duration-200 justify-center text-gray-300 gap-2 max-md:py-3`
+              ` md:ml-auto md:flex md:flex-row md:h-auto items-center transition-all ease-in-out duration-200 justify-center text-gray-300 gap-2 max-md:py-3`
             }
           >
             <Search />
-            <NavLink className="flex hover:underline" to="/profile">
+            <NavLink
+              className={({ isActive }) =>
+                `flex ${isActive ? "text-gray-300" : "text-gray-400"}`
+              }
+              to="/cart"
+            >
               <FaShoppingCart className="inline m-1" />
               Cart
             </NavLink>

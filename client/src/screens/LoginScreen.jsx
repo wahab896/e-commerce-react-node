@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import Loader from "../components/Loader";
@@ -14,20 +14,25 @@ const LoginScreen = () => {
 
   const [login, { isLoading }] = useLoginMutation();
 
+  const { userInfo } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
-  
+
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 
   useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
     // navigate if we get user info
-  }, [redirect]);
+  }, [navigate, redirect, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password });
+      const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (err) {
@@ -68,6 +73,7 @@ const LoginScreen = () => {
           </div>
         </div>
         <button
+          disabled={isLoading}
           type="submit"
           className="mt-2 p-2 text-gray-100 border rounded-md bg-gray-700 hover:bg-gray-800"
         >

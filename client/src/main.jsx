@@ -14,14 +14,25 @@ import ProfileScreen from "./screens/ProfileScreen.jsx";
 import HomeScreen from "./screens/HomeScreen.jsx";
 import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
+import OrderListScreen from "./screens/OrderListScreen.jsx";
+import ProductListScreen from "./screens/ProductListScreen.jsx";
+import UserListScreen from "./screens/UserListScreen.jsx";
+import CartScreen from "./screens/CartScreen.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index path="/" element={<HomeScreen />}></Route>
       <Route path="/profile" element={<ProfileScreen />} />
+      <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route path="/admin/productlist" element={<ProductListScreen />} />
+        <Route path="/admin/userlist" element={<UserListScreen />} />
+      </Route>
     </Route>
   )
 );
