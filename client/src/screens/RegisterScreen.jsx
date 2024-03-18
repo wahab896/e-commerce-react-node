@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useRegisterMutation } from "../slices/usersApiSlice";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../slices/authSlice";
+import Loader from "../components/Loader";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -12,16 +16,25 @@ const RegisterScreen = () => {
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 
+  const [registerApi, { isLoading }] = useRegisterMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {}, [redirect]);
 
   const submitHandler = async (e) => {
-    console.log('test', {password, confirmPassword})
+    console.log("test", { password, confirmPassword });
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Passwords does not match");
     } else {
       try {
-      } catch (err) {}
+        const res = await registerApi({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate(redirect);
+      } catch (err) {
+        toast.error(err?.data?.message || err?.error);
+      }
     }
   };
 
@@ -84,10 +97,12 @@ const RegisterScreen = () => {
         </div>
         <button
           type="submit"
+          disabled={isLoading}
           className="mt-2 p-2 text-gray-100 border rounded-md bg-gray-700 hover:bg-gray-800"
         >
           Register
         </button>
+        {isLoading && <Loader />}
         <div className="mt-4 text-gray-500">
           Already have an account?
           <NavLink

@@ -31,4 +31,29 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-export { authUser, logoutUser };
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const userExist = await User.findOne({ email });
+
+  if (userExist) {
+    res.status(400);
+    throw "User already exists";
+  }
+  const newUser = await User.create({ name, email, password });
+
+  if (newUser) {
+    generateToken(res, newUser._id);
+    res.status(201).json({
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      isAdmin: newUser.isAdmin,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+});
+
+export { authUser, logoutUser, registerUser };
