@@ -56,4 +56,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, logoutUser, registerUser };
+const getUsers = asyncHandler(async (req, res) => {
+  const allUsers = await User.find({});
+  res.json(allUsers);
+});
+
+export { authUser, logoutUser, registerUser, getUsers };
