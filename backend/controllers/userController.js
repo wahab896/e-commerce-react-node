@@ -61,4 +61,30 @@ const getUsers = asyncHandler(async (req, res) => {
   res.json(allUsers);
 });
 
-export { authUser, logoutUser, registerUser, getUsers };
+const getUserById = asyncHandler(async (req, res) => {
+  const existingUser = await User.findById(req.params.id).select("-password");
+  if (existingUser) {
+    res.json(existingUser);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const existingUser = await User.findById(req.params.id);
+
+  if (existingUser) {
+    if (existingUser.isAdmin) {
+      res.status(400);
+      throw new Error("Can not delete admin User");
+    }
+    await User.deleteOne({ _id: existingUser.id });
+    res.json({ message: "User Removed" });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+export { authUser, logoutUser, registerUser, getUsers, deleteUser, getUserById };
