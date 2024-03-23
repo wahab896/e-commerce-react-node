@@ -3,6 +3,7 @@ import {
   useGetUsersQuery,
 } from "../slices/usersApiSlice";
 import Loader from "../components/Loader";
+import ErrorBox from "../components/ErrorBox";
 import { FaTrash, FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
@@ -11,7 +12,6 @@ const UserListScreen = () => {
   const { data: users, error, isLoading, refetch } = useGetUsersQuery();
 
   const [deleteUsers] = useDeleteUserMutation();
-  const handleEdit = () => {};
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure")) {
@@ -28,7 +28,7 @@ const UserListScreen = () => {
   const loadOrError = isLoading ? (
     <Loader />
   ) : error ? (
-    <div>{error?.data?.message || error?.error}</div>
+    <ErrorBox msg={error?.data?.message || error?.error} />
   ) : (
     false
   );
@@ -71,24 +71,22 @@ const UserListScreen = () => {
                     )}
                   </td>
                   <td className="p-1 border border-slate-400">
-                    {!u.isAdmin && (
-                      <>
-                        <button
-                          className="hover:cursor-pointer p-1.5 hover:bg-slate-300 "
-                          onClick={handleEdit}
+
+                      <div className="flex justify-center items-center">
+                        <NavLink
+                          className="inline-block first-letter:hover:cursor-pointer p-1.5 mr-2 hover:bg-slate-300 "
+                          to={`/admin/user/${u._id}/edit`}
                         >
-                          <NavLink to={`/admin/user/${u._id}/edit`}>
-                            <FaEdit className="text-black text-md" />
-                          </NavLink>
-                        </button>
+                          <FaEdit className="text-black text-md" />
+                        </NavLink>
                         <button
                           className="hover:cursor-pointer bg-red-500 hover:bg-red-400 p-2 border rounded-md"
                           onClick={() => handleDelete(u._id)}
                         >
                           <FaTrash className="text-gray-200  text-md" />
                         </button>
-                      </>
-                    )}
+                      </div>
+
                   </td>
                 </tr>
               );
