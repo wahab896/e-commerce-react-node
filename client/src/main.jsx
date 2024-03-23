@@ -20,12 +20,12 @@ import ProductListScreen from "./screens/ProductListScreen.jsx";
 import UserListScreen from "./screens/UserListScreen.jsx";
 import CartScreen from "./screens/CartScreen.jsx";
 import UserEditScreen from "./screens/UserEditScreen.jsx";
+import PrivateRoute from "./components/PrivateRouter.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index path="/" element={<HomeScreen />}></Route>
-      <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
@@ -34,6 +34,9 @@ const router = createBrowserRouter(
         <Route path="/admin/productlist" element={<ProductListScreen />} />
         <Route path="/admin/userlist" element={<UserListScreen />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+      </Route>
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="/profile" element={<ProfileScreen />} />
       </Route>
     </Route>
   )

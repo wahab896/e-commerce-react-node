@@ -23,7 +23,6 @@ const RegisterScreen = () => {
   useEffect(() => {}, [redirect]);
 
   const submitHandler = async (e) => {
-    console.log("test", { password, confirmPassword });
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Passwords does not match");

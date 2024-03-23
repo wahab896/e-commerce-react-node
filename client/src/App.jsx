@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { logout } from "./slices/authSlice";
@@ -16,6 +16,7 @@ function App() {
       const currentTime = new Date().getTime();
       if (currentTime > expirationTime) {
         dispatch(logout());
+        toast.info("Please re-login. Session timed-out");
       }
     }
   }, [dispatch]);
