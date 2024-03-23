@@ -87,4 +87,33 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, logoutUser, registerUser, getUsers, deleteUser, getUserById };
+const updateUser = asyncHandler(async (req, res) => {
+  const existingUser = await User.findById(req.params.id);
+
+  if (existingUser) {
+    existingUser.name = req.body.name || existingUser.name;
+    existingUser.email = req.body.email || existingUser.email;
+    existingUser.isAdmin = Boolean(req.body.isAdmin);
+
+    const updatedUser = await existingUser.save();
+    res.json({
+      _id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+export {
+  authUser,
+  logoutUser,
+  registerUser,
+  getUsers,
+  deleteUser,
+  getUserById,
+  updateUser,
+};
