@@ -51,7 +51,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <div className="grid md:grid-cols-4 gap-10 w-full mt-4 px-2 md:px-20">
+    <div className="grid lg:grid-cols-4 gap-10 w-full mt-4 px-2 md:px-20">
       <form onSubmit={submitHandler} className="md:mx-auto w-full">
         <h1 className="text-4xl font-semibold text-gray-500">User Profile</h1>
         <div className="mt-4 flex flex-col gap-y-2">
@@ -113,7 +113,7 @@ const ProfileScreen = () => {
         </button>
         {profileLoading && <Loader />}
       </form>
-      <div className="md:col-span-3">
+      <div className="lg:col-span-3">
         <h1 className="text-4xl font-semibold text-gray-500">My orders</h1>
       </div>
     </div>

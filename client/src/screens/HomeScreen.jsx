@@ -1,5 +1,9 @@
 import Carousal from "../components/Carousal";
 import Product from "../components/Product";
+import { useGetProductsQuery } from "../slices/productApiSlice";
+import Loader from "../components/Loader";
+import ErrorBox from "../components/ErrorBox";
+
 const items = [
   {
     id: 1,
@@ -46,20 +50,34 @@ const items = [
 ];
 
 const HomeScreen = () => {
+  const { data, isLoading, error } = useGetProductsQuery();
+
+  const loadOrError = isLoading ? (
+    <Loader />
+  ) : error ? (
+    <ErrorBox msg={error?.data?.message || error?.error} />
+  ) : (
+    false
+  );
   return (
     <div className="container mx-auto px-5 md:px-20">
-      <Carousal items={items} />
-
-      <h1 className="text-3xl font-semibold text-gray-500 py-8">Latest Products</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {items.map((itm, i) => {
-          return (
-            <div className="" key={itm.id}>
-              <Product product={itm} />
-            </div>
-          );
-        })}
-      </div>
+      {/* <Carousal items={data} /> */}
+      {loadOrError || (
+        <>
+          <h1 className="text-3xl font-semibold text-gray-500 py-8">
+            Latest Products
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {data?.products?.map((itm, i) => {
+              return (
+                <div className="" key={itm._id}>
+                  <Product product={itm} />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 };
