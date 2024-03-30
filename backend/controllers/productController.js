@@ -47,10 +47,10 @@ const addReview = asyncHandler(async (req, res) => {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
-    if (alreadyReviewed) {
-      res.status(400);
-      throw new Error("Product already reviewed");
-    }
+    // if (alreadyReviewed) {
+    //   res.status(400);
+    //   throw new Error("Product already reviewed");
+    // }
     const newReview = {
       name: req.user.name,
       rating: Number(rating),
