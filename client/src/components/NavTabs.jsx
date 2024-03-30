@@ -1,11 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  FaShoppingCart,
-  FaUser,
-  FaSignOutAlt,
-  FaCaretDown,
-  FaCaretUp,
-} from "react-icons/fa";
+import { FaUser, FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../slices/usersApiSlice";
@@ -36,10 +30,7 @@ const ProfileItems = () => {
       >
         Profile
       </NavLink>
-      <li
-        onClick={handleLogout}
-        className="p-2 list-none hover:bg-gray-600 "
-      >
+      <li onClick={handleLogout} className="p-2 list-none hover:bg-gray-600 ">
         Logout
       </li>
     </>

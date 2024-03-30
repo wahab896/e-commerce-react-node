@@ -71,22 +71,20 @@ const UserListScreen = () => {
                     )}
                   </td>
                   <td className="p-1 border border-slate-400">
-
-                      <div className="flex justify-center items-center">
-                        <NavLink
-                          className="inline-block first-letter:hover:cursor-pointer p-1.5 mr-2 hover:bg-slate-300 "
-                          to={`/admin/user/${u._id}/edit`}
-                        >
-                          <FaEdit className="text-black text-md" />
-                        </NavLink>
-                        <button
-                          className="hover:cursor-pointer bg-red-500 hover:bg-red-400 p-2 border rounded-md"
-                          onClick={() => handleDelete(u._id)}
-                        >
-                          <FaTrash className="text-gray-200  text-md" />
-                        </button>
-                      </div>
-
+                    <div className="flex justify-center items-center">
+                      <NavLink
+                        className="inline-block hover:cursor-pointer p-1.5 mr-2 hover:bg-slate-300"
+                        to={`/admin/user/${u._id}/edit`}
+                      >
+                        <FaEdit className="text-black text-md" />
+                      </NavLink>
+                      <button
+                        className="hover:cursor-pointer bg-red-500 hover:bg-red-400 p-2 border rounded-md"
+                        onClick={() => handleDelete(u._id)}
+                      >
+                        <FaTrash className="text-gray-200  text-md" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

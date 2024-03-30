@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { FaBars, FaShoppingCart } from "react-icons/fa";
+import { FaBars, FaCircle, FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import Search from "./Search";
 import NavTabs from "./NavTabs";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const { cartItems } = useSelector((state) => state.cart);
   const [openNav, setOpenNav] = useState(false);
   return (
     <header>
@@ -38,7 +40,12 @@ const Header = () => {
               to="/cart"
             >
               <FaShoppingCart className="inline m-1" />
-              Cart
+              Cart{" "}
+              {cartItems.length > 0 && (
+                <span className="mx-1 px-2 py-1 text-xs font-bold text-center bg-teal-600 rounded-l-full rounded-r-full">
+                  {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                </span>
+              )}
             </NavLink>
             <NavTabs />
           </div>
