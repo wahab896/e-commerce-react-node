@@ -2,11 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import QtyDropdown from "../components/QtyDropdown";
 import { addToCart, removeFromCart } from "../slices/cartSlice";
 import { FaTrash } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate("/login?redirect=/shipping");
+  };
+
   return (
     <div className="mt-10 grid md:grid-cols-6 grid-cols-1 px-2 md:px-20 text-gray-500 gap-x-10">
       <div className="md:col-span-4">
@@ -36,7 +42,15 @@ const CartScreen = () => {
                 .toFixed(2)}
             </div>
           </div>
-          <button className="mt-4 p-2 text-gray-100 border rounded-md bg-gray-700 hover:bg-gray-800">
+          <button
+            onClick={handleCheckout}
+            disabled={!cartItems.length}
+            className={`mt-4 p-2 text-gray-100 border rounded-md  ${
+              cartItems.length
+                ? "bg-gray-700 hover:bg-gray-800"
+                : "bg-gray-600 cursor-not-allowed"
+            }`}
+          >
             Proceed To Checkout
           </button>
         </div>
@@ -62,7 +76,7 @@ const ProductTable = ({ cartItems }) => {
       {cartItems.map((item) => (
         <div
           key={item._id}
-          className="grid md:grid-cols-6 grid-cols-4 text-center items-center p-4 border-b-2 last-of-type:border-b-0"
+          className="grid md:grid-cols-6 grid-cols-4 md:text-center items-center p-4 border-b-2 last-of-type:border-b-0 max-md:gap-y-5"
         >
           <div className="md:col-span-1 col-span-4">
             <img
@@ -71,8 +85,15 @@ const ProductTable = ({ cartItems }) => {
               alt={item.name}
             />
           </div>
-          <div className="md:col-span-2 col-span-4">{item.name}</div>
-          <div className="md:col-span-1 col-span-4">{item.price}</div>
+          <NavLink
+            to={`/product/${item._id}`}
+            className="md:col-span-2 col-span-3 underline text-slate-900"
+          >
+            {item.name}
+          </NavLink>
+          <div className="md:col-span-1 col-span-1 flex justify-center">
+            ${item.price}
+          </div>
           <QtyDropdown
             className="md:col-span-1 col-span-3"
             qty={item.qty}
