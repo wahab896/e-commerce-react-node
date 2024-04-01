@@ -2,12 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useId, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
+import { useAddNewOrdersMutation } from "../slices/orderApiSlice";
+import { toast } from "react-toastify";
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [addNewOrder, { isLoading, error }] = useAddNewOrdersMutation();
 
   useEffect(() => {
     if (!cart.shippingAddress.address) {
@@ -17,10 +21,22 @@ const PlaceOrderScreen = () => {
     }
   }, [navigate, cart.shippingAddress.address, cart.paymentMethod]);
 
-  const submitPaymentHandler = (e) => {
-    e.preventDefault();
-    dispatch(savePaymentMethod({ paymentMethod }));
-    navigate("/placeorder");
+  const submitPaymentHandler = async (e) => {
+    try {
+      const res = await addNewOrder({
+        orderItems: cart.cartItems,
+        paymentMethod: cart.paymentMethod,
+        shippingAddress: cart.shippingAddress,
+        itemsPrice: cart.itemsPrice,
+        taxPrice: cart.taxPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      }).unwrap();
+      dispatch(clearCartItems());
+      navigate(`/order/${res._id}`);
+    } catch (err) {
+      toast.error(err?.data?.message || err?.Error || err?.message);
+    }
   };
   return (
     <div className="px-5 md:px-20">
@@ -107,7 +123,7 @@ const PlaceOrderScreen = () => {
             </div>
             <span></span>
             <button
-              // onClick={handleCheckout}
+              onClick={submitPaymentHandler}
               disabled={!cart.cartItems.length}
               className={`mt-4 p-2 self-start text-gray-100 border rounded-md  ${
                 cart.cartItems.length
