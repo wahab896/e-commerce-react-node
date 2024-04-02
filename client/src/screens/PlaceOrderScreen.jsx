@@ -4,6 +4,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useAddNewOrdersMutation } from "../slices/orderApiSlice";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
+import ErrorBox from "../components/ErrorBox";
+import { clearCartItems } from "../slices/cartSlice";
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
@@ -38,6 +41,15 @@ const PlaceOrderScreen = () => {
       toast.error(err?.data?.message || err?.Error || err?.message);
     }
   };
+
+  const loadOrError = isLoading ? (
+    <Loader />
+  ) : error ? (
+    <ErrorBox msg={error?.data?.message || error?.error} />
+  ) : (
+    false
+  );
+
   return (
     <div className="px-5 md:px-20">
       <div className="mt-5 flex justify-center">
@@ -124,7 +136,7 @@ const PlaceOrderScreen = () => {
             <span></span>
             <button
               onClick={submitPaymentHandler}
-              disabled={!cart.cartItems.length}
+              disabled={!cart.cartItems.length || isLoading}
               className={`mt-4 p-2 self-start text-gray-100 border rounded-md  ${
                 cart.cartItems.length
                   ? "bg-gray-700 hover:bg-gray-800"
@@ -133,6 +145,7 @@ const PlaceOrderScreen = () => {
             >
               Place Order
             </button>
+            {loadOrError}
           </div>
         </div>
       </div>

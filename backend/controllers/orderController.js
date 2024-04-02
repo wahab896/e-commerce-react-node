@@ -18,7 +18,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
         (item) => item._id.toString() === clientItem._id
       );
       return {
-        ...matchedDbItem,
+        ...clientItem,
         product: clientItem._id,
         price: matchedDbItem.price,
         _id: undefined,
@@ -50,4 +50,18 @@ const getOrders = asyncHandler(async (req, res) => {
   res.json(allOrders);
 });
 
-export { addOrderItems, getOrders };
+const getOrderById = asyncHandler(async (req, res) => {
+  const orderExist = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+
+  if (orderExist) {
+    res.json(orderExist);
+  } else {
+    res.status(404);
+    throw new Error("Order does not exist");
+  }
+});
+
+export { addOrderItems, getOrders, getOrderById};
